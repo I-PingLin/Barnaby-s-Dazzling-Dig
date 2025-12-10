@@ -1,0 +1,55 @@
+<div class="fixed inset-0 bg-black/30 z-40" (click)="closeChat.emit()"></div>
+<div class="fixed bottom-4 right-4 w-[calc(100%-2rem)] max-w-md h-[70vh] bg-white rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden animate-fade-in-up">
+  <!-- Header -->
+  <div class="flex items-center justify-between p-4 bg-sky-500 text-white">
+    <h3 class="text-xl font-bold">Friendly Chatbot</h3>
+    <button (click)="closeChat.emit()" class="p-1 rounded-full hover:bg-sky-600 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div #chatContainer class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50">
+    @for(message of messages(); track message; let i = $index) {
+      <div class="flex" [class.justify-end]="message.role === 'user'" [class.justify-start]="message.role === 'model'">
+        <div class="max-w-[80%] p-3 rounded-2xl" [class.bg-sky-500]="message.role === 'user'" [class.text-white]="message.role === 'user'" [class.bg-slate-200]="message.role === 'model'" [class.text-slate-800]="message.role === 'model'">
+          <p>{{ message.text }}</p>
+        </div>
+      </div>
+    }
+    @if (isLoading()) {
+      <div class="flex justify-start">
+        <div class="p-3 rounded-2xl bg-slate-200 text-slate-800">
+          <div class="flex items-center space-x-1">
+            <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse"></div>
+            <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+            <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="p-4 border-t border-slate-200 bg-white">
+    <form (submit)="sendMessage()" class="flex items-center space-x-2">
+      <input 
+        type="text" 
+        [(ngModel)]="userInput"
+        name="userInput"
+        placeholder="Ask a question..."
+        class="flex-1 p-3 border border-slate-300 rounded-full focus:ring-2 focus:ring-sky-500 focus:outline-none"
+        [disabled]="isLoading()">
+      <button 
+        type="submit" 
+        class="p-3 rounded-full bg-sky-500 text-white hover:bg-sky-600 disabled:bg-slate-400 transition-colors"
+        [disabled]="!userInput().trim() || isLoading()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>

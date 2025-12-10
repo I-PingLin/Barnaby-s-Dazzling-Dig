@@ -1,0 +1,5 @@
+{
+  "name": "AI Storybook for Kids",
+  "description": "An interactive storybook for children that uses AI to generate unique illustrations for every page and reads the stories aloud. It also features a friendly chatbot for kids to ask questions.",
+  "requestFramePermissions": []
+}

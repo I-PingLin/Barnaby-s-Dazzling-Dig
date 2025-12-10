@@ -1,0 +1,35 @@
+<main class="min-h-screen w-full flex flex-col items-center justify-center p-4">
+  
+  <h1 class="text-4xl sm:text-5xl font-bold text-sky-700 mb-2 text-center">{{ storyTitle() }}</h1>
+  <p class="text-slate-500 mb-8 text-center">An AI-generated storybook adventure!</p>
+
+  @if (isLoadingStory()) {
+    <div class="flex flex-col items-center justify-center text-slate-600 p-8 bg-white rounded-2xl shadow-lg">
+      <svg class="animate-spin h-12 w-12 text-sky-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span class="text-xl font-semibold">Creating a new story for you...</span>
+    </div>
+  } @else {
+    <app-story-viewer 
+      [pageText]="currentPageText()" 
+      [pageNumber]="currentPageIndex()"
+      [totalPages]="storyPages().length"
+      (nextPage)="goToNextPage()"
+      (prevPage)="goToPrevPage()">
+    </app-story-viewer>
+  }
+
+  <!-- Chatbot Floating Action Button -->
+  <button (click)="toggleChatbot()" class="fixed bottom-6 right-6 bg-sky-500 text-white p-4 rounded-full shadow-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:scale-110 transition-all duration-200 z-30">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.08-3.239A8.962 8.962 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.416 14.158A7.026 7.026 0 004 10c0-3.037 2.686-5.5 6-5.5s6 2.463 6 5.5-2.686 5.5-6 5.5c-1.282 0-2.48-.345-3.51-.933L4.416 14.158z" clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  <!-- Chatbot Component -->
+  @if(isChatbotOpen()) {
+    <app-chatbot (closeChat)="toggleChatbot()"></app-chatbot>
+  }
+</main>
